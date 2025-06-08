@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Freshness Detector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full space-y-6">
+
+        <div class="space-y-1">
+            <h2 class="text-2xl font-bold">🍽️ Upload a Food Image</h2>
+            <p class="text-sm text-gray-600 italic">
+                ⚠️ Please ensure the image contains only one food item (e.g., a single fruit, vegetable, or slice of bread) on a plain background.
+            </p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" required
+                   class="w-full border border-gray-300 rounded p-2 bg-gray-50 text-sm"/>
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow">
+                🔍 Analyze
+            </button>
+        </form>
+
+        {% if advisory %}
+            <div class="transition-all">
+                {% if 'Fresh' in advisory %}
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded">
+                        <p class="font-semibold">✅ Advisory:</p>
+                        <p>{{ advisory }}</p>
+                    </div>
+                {% elif 'Moderate' in advisory %}
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded">
+                        <p class="font-semibold">⚠️ Advisory:</p>
+                        <p>{{ advisory }}</p>
+                    </div>
+                {% else %}
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+                        <p class="font-semibold">🚫 Advisory:</p>
+                        <p>{{ advisory }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if score is not none %}
+            <div class="text-center">
+                <h3 class="text-lg font-semibold">Freshness Score</h3>
+                <p class="text-blue-700 text-2xl font-bold">{{ score }}%</p>
+            </div>
+        {% endif %}
+
+        {% if image %}
+            <div class="mt-4 border rounded-lg overflow-hidden shadow-sm">
+                <img src="{{ image }}" alt="Analyzed Image" class="w-full">
+            </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>
+
